@@ -2,3 +2,4 @@
 # Defines
 ace_windows_defines = [ "WINDOWS_PLATFORM" ]
 ace_mac_defines = [ "MAC_PLATFORM" ]
+ace_linux_defines = [ "LINUX_PLATFORM" ]

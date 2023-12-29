@@ -14,8 +14,8 @@
         "en": ""
     },
     "component": {
-        "name": "thirdparty_glfw",
-        "subsystem": "",
+        "name": "glfw",
+        "subsystem": "thirdparty",
         "syscap": [],
         "features": [],
         "adapted_system_type": [],
