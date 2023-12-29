@@ -11,84 +11,125 @@ config("glfw_config_mac") {
   cflags = [ "-Wno-sign-compare" ]
 }
 
-template("glfw") {
-  forward_variables_from(invoker, "*")
+ohos_shared_library("glfw") {
+  defines = [ "PREVIEW" ]
+  include_dirs = [ "src" ]
+  public = [
+    "include/GLFW/glfw3.h",
+    "include/GLFW/glfw3native.h",
+  ]
 
-  ohos_static_library(target_name) {
-    defines += invoker.defines
-    include_dirs = [ "src" ]
-    public = [
-      "include/GLFW/glfw3.h",
-      "include/GLFW/glfw3native.h",
+  sources = [
+    "src/context.c",
+    "src/init.c",
+    "src/input.c",
+    "src/monitor.c",
+    "src/vulkan.c",
+    "src/window.c",
+  ]
+
+  public_configs = [ ":glfw_inner_headers" ]
+
+  if (current_os == "mingw") {
+    defines += ace_windows_defines
+    sources += [
+      "src/egl_context.c",
+      "src/egl_context.h",
+      "src/wgl_context.c",
+      "src/wgl_context.h",
+      "src/win32_init.c",
+      "src/win32_joystick.c",
+      "src/win32_joystick.h",
+      "src/win32_monitor.c",
+      "src/win32_platform.h",
+      "src/win32_time.c",
+      "src/win32_tls.c",
+      "src/win32_window.c",
     ]
 
-    sources = [
-      "src/context.c",
-      "src/init.c",
-      "src/input.c",
-      "src/monitor.c",
-      "src/vulkan.c",
-      "src/window.c",
+    defines += [ "_GLFW_WIN32" ]
+
+    libs = [
+      "gdi32",
+      "opengl32",
     ]
-
-    public_configs = [ ":glfw_inner_headers" ]
-
-    if (platform == "windows") {
-      sources += [
-        "src/egl_context.c",
-        "src/egl_context.h",
-        "src/wgl_context.c",
-        "src/wgl_context.h",
-        "src/win32_init.c",
-        "src/win32_joystick.c",
-        "src/win32_joystick.h",
-        "src/win32_monitor.c",
-        "src/win32_platform.h",
-        "src/win32_time.c",
-        "src/win32_tls.c",
-        "src/win32_window.c",
+  }
+  if (current_os == "mac") {
+    defines += ace_mac_defines
+    sources += [
+      "deps/glad.c",
+      "src/cocoa_init.m",
+      "src/cocoa_joystick.h",
+      "src/cocoa_joystick.m",
+      "src/cocoa_monitor.m",
+      "src/cocoa_platform.h",
+      "src/cocoa_time.c",
+      "src/cocoa_window.m",
+      "src/nsgl_context.h",
+      "src/nsgl_context.m",
+      "src/posix_tls.c",
+      "src/posix_tls.h",
+    ]
+    include_dirs += [ "deps" ]
+    if (defined(enable_gn_2021)) {
+      frameworks = [
+        "Cocoa.framework",
+        "IOKit.framework",
+        "CoreFoundation.framework",
+        "CoreVideo.framework",
       ]
-
-      defines += [ "_GLFW_WIN32" ]
-    }
-    if (platform == "mac") {
-      sources += [
-        "deps/glad.c",
-        "src/cocoa_init.m",
-        "src/cocoa_joystick.h",
-        "src/cocoa_joystick.m",
-        "src/cocoa_monitor.m",
-        "src/cocoa_platform.h",
-        "src/cocoa_time.c",
-        "src/cocoa_window.m",
-        "src/nsgl_context.h",
-        "src/nsgl_context.m",
-        "src/posix_tls.c",
-        "src/posix_tls.h",
-      ]
-      include_dirs += [ "deps" ]
+    } else {
       libs = [
         "Cocoa.framework",
         "IOKit.framework",
         "CoreFoundation.framework",
         "CoreVideo.framework",
       ]
-      cflags = [
-        "-Wno-deprecated-declarations",
-        "-Wno-objc-multiple-method-names",
-      ]
-      public_configs += [ ":glfw_config_mac" ]
-      defines += [ "_GLFW_COCOA" ]
     }
+
+    cflags = [
+      "-Wno-deprecated-declarations",
+      "-Wno-objc-multiple-method-names",
+      "-DNS_FORMAT_ARGUMENT(A)=",
+    ]
+    public_configs += [ ":glfw_config_mac" ]
+    defines += [ "_GLFW_COCOA" ]
   }
-}
+  if (current_os == "linux") {
+    defines += ace_linux_defines
+    sources += [
+      "src/egl_context.c",
+      "src/egl_context.h",
+      "src/glx_context.c",
+      "src/glx_context.h",
+      "src/linux_joystick.c",
+      "src/linux_joystick.h",
+      "src/posix_time.c",
+      "src/posix_time.h",
+      "src/posix_tls.c",
+      "src/posix_tls.h",
+      "src/x11_init.c",
+      "src/x11_monitor.c",
+      "src/x11_platform.h",
+      "src/x11_window.c",
+      "src/xkb_unicode.c",
+      "src/xkb_unicode.h",
+    ]
+    cflags_c = [
+      "-Wno-sign-compare",
+      "-Wno-missing-field-initializers",
+    ]
+    libs = [
+      "rt",
+      "dl",
+      "X11",
+      "Xcursor",
+      "Xinerama",
+      "Xrandr",
+    ]
+    defines += [ "_GLFW_X11" ]
+  }
 
-glfw("glfw_windows") {
-  defines = ace_windows_defines
-  platform = "windows"
-}
-
-glfw("glfw_mac") {
-  defines = ace_mac_defines
-  platform = "mac"
+  part_name = "glfw"
+  subsystem_name = "thirdparty"
 }

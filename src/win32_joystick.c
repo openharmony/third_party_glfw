@@ -668,7 +668,7 @@ void _glfwInitJoysticksWin32(void)
         }
     }
 
-    _glfwDetectJoystickConnectionWin32();
+// The initialization takes a long time on a specific computer _glfwDetectJoystickConnectionWin32();
 }
 
 // Close all opened joystick handles
