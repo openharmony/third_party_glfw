@@ -5,7 +5,7 @@
  * Modified for GLFW by Sylvain Hellegouarch - sh@programmationworld.com
  * Modified for variable frame rate by Marcus Geelnard
  * 2003-Jan-31: Minor cleanups and speedups / MG
- * 2010-10-24: Formatting and cleanup - Camilla Löwy
+ * 2010-10-24: Formatting and cleanup - Camilla Berglund
  *****************************************************************************/
 
 #if defined(_MSC_VER)
@@ -17,9 +17,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define GLAD_GL_IMPLEMENTATION
-#include <glad/gl.h>
-#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <linmath.h>
@@ -414,7 +412,7 @@ int main(int argc, char* argv[])
     glfwSetScrollCallback(window, scroll_callback);
 
     glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
+    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
     glfwSwapInterval(1);
 
     glfwGetFramebufferSize(window, &width, &height);
@@ -457,7 +455,6 @@ int main(int argc, char* argv[])
         glfwPollEvents();
     }
 
-    glfwTerminate();
     exit(EXIT_SUCCESS);
 }
 

@@ -1,7 +1,7 @@
 //========================================================================
 // A simple particle engine with threaded physics
 // Copyright (c) Marcus Geelnard
-// Copyright (c) Camilla Löwy <elmindreda@glfw.org>
+// Copyright (c) Camilla Berglund <elmindreda@glfw.org>
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -39,9 +39,7 @@
 #include <getopt.h>
 #include <linmath.h>
 
-#define GLAD_GL_IMPLEMENTATION
-#include <glad/gl.h>
-#define GLFW_INCLUDE_NONE
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 // Define tokens for GL_EXT_separate_specular_color if not already defined
@@ -445,7 +443,7 @@ static void draw_particles(GLFWwindow* window, double t, float dt)
     }
 
     // Set up vertex arrays. We use interleaved arrays, which is easier to
-    // handle (in most situations) and it gives a linear memory access
+    // handle (in most situations) and it gives a linear memeory access
     // access pattern (which may give better performance in some
     // situations). GL_T2F_C4UB_V3F means: 2 floats for texture coords,
     // 4 ubytes for color and 3 floats for vertex coord (in that order).
@@ -459,9 +457,7 @@ static void draw_particles(GLFWwindow* window, double t, float dt)
     {
         struct timespec ts;
         clock_gettime(CLOCK_REALTIME, &ts);
-        ts.tv_nsec += 100 * 1000 * 1000;
-        ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
-        ts.tv_nsec %= 1000 * 1000 * 1000;
+        ts.tv_nsec += 100000000;
         cnd_timedwait(&thread_sync.p_done, &thread_sync.particles_lock, &ts);
     }
 
@@ -655,7 +651,7 @@ static void draw_fountain(void)
 
 
 //========================================================================
-// Recursive function for building variable tessellated floor
+// Recursive function for building variable tesselated floor
 //========================================================================
 
 static void tessellate_floor(float x1, float y1, float x2, float y2, int depth)
@@ -722,7 +718,7 @@ static void draw_floor(void)
         glMaterialfv(GL_FRONT, GL_SPECULAR, floor_specular);
         glMaterialf(GL_FRONT, GL_SHININESS, floor_shininess);
 
-        // Draw floor as a bunch of triangle strips (high tessellation
+        // Draw floor as a bunch of triangle strips (high tesselation
         // improves lighting)
         glNormal3f(0.f, 0.f, 1.f);
         glBegin(GL_QUADS);
@@ -912,9 +908,7 @@ static int physics_thread_main(void* arg)
         {
             struct timespec ts;
             clock_gettime(CLOCK_REALTIME, &ts);
-            ts.tv_nsec += 100 * 1000 * 1000;
-            ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
-            ts.tv_nsec %= 1000 * 1000 * 1000;
+            ts.tv_nsec += 100000000;
             cnd_timedwait(&thread_sync.d_done, &thread_sync.particles_lock, &ts);
         }
 
@@ -996,7 +990,7 @@ int main(int argc, char** argv)
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
+    gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
     glfwSwapInterval(1);
 
     glfwSetFramebufferSizeCallback(window, resize_callback);
