@@ -79,7 +79,6 @@ ohos_shared_library("glfw") {
   if (current_os == "mac") {
     defines += ace_mac_defines
     sources += [
-      "deps/glad.c",
       "src/cocoa_init.m",
       "src/cocoa_joystick.h",
       "src/cocoa_joystick.m",
@@ -88,7 +87,15 @@ ohos_shared_library("glfw") {
       "src/cocoa_time.c",
       "src/cocoa_time.h",
       "src/cocoa_window.m",
+      "src/egl_context.c",
+      "src/egl_context.h",
       "src/nsgl_context.m",
+      "src/posix_module.c",
+      "src/posix_poll.c",
+      "src/posix_poll.h",
+      "src/posix_thread.c",
+      "src/posix_time.c",
+      "src/posix_time.h",
     ]
     include_dirs += [ "deps" ]
     if (defined(enable_gn_2021)) {
@@ -97,6 +104,7 @@ ohos_shared_library("glfw") {
         "IOKit.framework",
         "CoreFoundation.framework",
         "CoreVideo.framework",
+        "QuartzCore.framework",
       ]
     } else {
       libs = [
@@ -104,6 +112,7 @@ ohos_shared_library("glfw") {
         "IOKit.framework",
         "CoreFoundation.framework",
         "CoreVideo.framework",
+        "QuartzCore.framework",
       ]
     }
 
