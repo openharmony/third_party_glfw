@@ -636,7 +636,7 @@ int _glfwInitCocoa(void)
 
     // In case we are unbundled, make us a proper UI application
     if (_glfw.hints.init.ns.menubar)
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
 
     return GLFW_TRUE;
 
