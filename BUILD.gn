@@ -157,6 +157,7 @@ ohos_shared_library("glfw") {
       "Xrandr",
     ]
     defines += [ "_GLFW_X11" ]
+    defines += [ "USE_DUMMPY_XINPUT2" ]
   }
 
   part_name = "glfw"
