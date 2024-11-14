@@ -637,8 +637,10 @@ static GLFWbool initExtensions(void)
     {
         _glfw.x11.xi.QueryVersion = (PFN_XIQueryVersion)
             _glfwPlatformGetModuleSymbol(_glfw.x11.xi.handle, "XIQueryVersion");
+#ifndef USE_DUMMPY_XINPUT2
         _glfw.x11.xi.SelectEvents = (PFN_XISelectEvents)
             _glfwPlatformGetModuleSymbol(_glfw.x11.xi.handle, "XISelectEvents");
+#endif
 
         if (XQueryExtension(_glfw.x11.display,
                             "XInputExtension",

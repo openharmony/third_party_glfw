@@ -497,6 +497,7 @@ static void releaseCursor(void)
 //
 static void enableRawMouseMotion(_GLFWwindow* window)
 {
+#ifndef USE_DUMMPY_XINPUT2
     XIEventMask em;
     unsigned char mask[XIMaskLen(XI_RawMotion)] = { 0 };
 
@@ -506,12 +507,14 @@ static void enableRawMouseMotion(_GLFWwindow* window)
     XISetMask(mask, XI_RawMotion);
 
     XISelectEvents(_glfw.x11.display, _glfw.x11.root, &em, 1);
+#endif
 }
 
 // Disable XI2 raw mouse motion events
 //
 static void disableRawMouseMotion(_GLFWwindow* window)
 {
+#ifndef USE_DUMMPY_XINPUT2
     XIEventMask em;
     unsigned char mask[] = { 0 };
 
@@ -520,6 +523,7 @@ static void disableRawMouseMotion(_GLFWwindow* window)
     em.mask = mask;
 
     XISelectEvents(_glfw.x11.display, _glfw.x11.root, &em, 1);
+#endif
 }
 
 // Apply disabled cursor mode to a focused window
@@ -1182,6 +1186,7 @@ static void processEvent(XEvent *event)
     {
         if (_glfw.x11.xi.available)
         {
+#ifndef USE_DUMMPY_XINPUT2
             _GLFWwindow* window = _glfw.x11.disabledCursorWindow;
 
             if (window &&
@@ -1211,6 +1216,7 @@ static void processEvent(XEvent *event)
             }
 
             XFreeEventData(_glfw.x11.display, &event->xcookie);
+#endif
         }
 
         return;
