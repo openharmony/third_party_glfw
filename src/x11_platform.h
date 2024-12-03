@@ -45,7 +45,9 @@
 #include <X11/extensions/Xinerama.h>
 
 // The XInput extension provides raw mouse motion input
+#ifndef USE_DUMMPY_XINPUT2
 #include <X11/extensions/XInput2.h>
+#endif
 
 // The Shape extension provides custom window shapes
 #include <X11/extensions/shape.h>
@@ -370,9 +372,13 @@ typedef Bool (* PFN_XF86VidModeGetGammaRampSize)(Display*,int,int*);
 #define XF86VidModeGetGammaRampSize _glfw.x11.vidmode.GetGammaRampSize
 
 typedef Status (* PFN_XIQueryVersion)(Display*,int*,int*);
+#ifndef USE_DUMMPY_XINPUT2
 typedef int (* PFN_XISelectEvents)(Display*,Window,XIEventMask*,int);
+#endif
 #define XIQueryVersion _glfw.x11.xi.QueryVersion
+#ifndef USE_DUMMPY_XINPUT2
 #define XISelectEvents _glfw.x11.xi.SelectEvents
+#endif
 
 typedef Bool (* PFN_XRenderQueryExtension)(Display*,int*,int*);
 typedef Status (* PFN_XRenderQueryVersion)(Display*dpy,int*,int*);
@@ -847,7 +853,9 @@ typedef struct _GLFWlibraryX11
         int         major;
         int         minor;
         PFN_XIQueryVersion QueryVersion;
+#ifndef USE_DUMMPY_XINPUT2
         PFN_XISelectEvents SelectEvents;
+#endif
     } xi;
 
     struct {
