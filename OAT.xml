@@ -31,6 +31,9 @@
                 <filteritem type="filepath" name="docs/main.dox" desc="This is guide file, no need license"/>		
                 <filteritem type="filepath" name="docs/compile.dox" desc="This is guide file, no need license"/>		
                 <filteritem type="filepath" name="tests/vulkan.c" desc="This file is free software"/>
+                <filteritem type="filepath" name="examples/glfw.icns" desc="This file is free software"/>
+                <filteritem type="filepath" name="examples/glfw.ico" desc="This file is free software"/>
+                <filteritem type="filepath" name="deps/nuklear.h" desc="This file is free software"/>
 		<filteritem type="filepath" name="deps/KHR/khrplatform.h" desc="This file is free software"/>
 		<filteritem type="filepath" name="deps/mingw/dinput.h" desc="don't use this file"/>
 		<filteritem type="filepath" name="deps/mingw/xinput.h" desc="don't use this file"/>
