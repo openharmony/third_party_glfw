@@ -16,6 +16,10 @@ import("//third_party/glfw/glfw_ace_config.gni")
 
 config("glfw_inner_headers") {
   include_dirs = [ "include" ]
+
+  if (current_os == "mac") {
+    include_dirs += [ "deps" ]
+  }
 }
 
 config("glfw_config_mac") {
@@ -77,6 +81,7 @@ ohos_shared_library("glfw") {
     ]
   }
   if (current_os == "mac") {
+    public += [ "deps/glad/gl.h" ]
     defines += ace_mac_defines
     sources += [
       "src/cocoa_init.m",

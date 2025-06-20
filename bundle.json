@@ -27,7 +27,16 @@
         },
         "build": {
             "sub_component": [],
-            "inner_kits": [],
+            "inner_kits": [
+                {
+                    "type": "so",
+                    "name": "//third_party/glfw:glfw",
+                    "header": {
+                      "header_files": [ "GLFW/glfw3.h" ],
+                      "header_base": "//third_party/glfw/include"
+                    }
+                }
+            ],
             "test": []
         }
     }
