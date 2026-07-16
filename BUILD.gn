@@ -23,6 +23,7 @@ config("glfw_config_mac") {
 }
 
 ohos_shared_library("glfw") {
+  branch_protector_ret = "pac_ret"
   defines = [ "PREVIEW" ]
   include_dirs = [ "src" ]
   public = [
